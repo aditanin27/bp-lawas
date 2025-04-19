@@ -1,59 +1,26 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 import Router from './router';
+// import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
-import { store } from './redux/store/index';
-import Toast from 'react-native-toast-message'; // Import Toast
+import { configureStore } from '@reduxjs/toolkit';
+// import { Store,persistor } from './redux/store';
+import { store } from './redux/store/index'
+// import { TamRapotShelter } from '../src/layout/Anak_Binaan/TamRapotShelter';
+// import { Rapshelter } from '../src/layout/Anak_Binaan/Rapshelter';
+// import { ListPengajuan } from '../src/layout/Pengajuan/ListPengajuan';
 
 export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        {/* Your main app router */}
+        {/* <ListPengajuan /> */}
         <Router />
-        
-        {/* Toast component at root level */}
-        <Toast 
-          ref={(ref) => Toast.setRef(ref)} 
-          // Optional config (adjust as needed)
-          config={{
-            success: ({ text1, text2 }) => (
-              <View style={styles.toastSuccess}>
-                <Text style={styles.toastText1}>{text1}</Text>
-                {text2 && <Text style={styles.toastText2}>{text2}</Text>}
-              </View>
-            ),
-            error: ({ text1 }) => (
-              <View style={styles.toastError}>
-                <Text style={styles.toastText1}>{text1}</Text>
-              </View>
-            ),
-          }}
-        />
+        {/* <PersistGate persistor={persistor} loading={null}>
+        </PersistGate> */}
       </Provider>
-    );
+    )
   }
 }
 
-// Add toast styles
-const styles = StyleSheet.create({
-  toastSuccess: {
-    padding: 15,
-    backgroundColor: 'green',
-    borderRadius: 5,
-    marginHorizontal: 20,
-  },
-  toastError: {
-    padding: 15,
-    backgroundColor: 'red',
-    borderRadius: 5,
-    marginHorizontal: 20,
-  },
-  toastText1: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  toastText2: {
-    color: 'white',
-  },
-});
+const styles = StyleSheet.create({})
