@@ -1,0 +1,1857 @@
+import React, { Component } from 'react';
+import {
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  TextInput,
+  ToastAndroid,
+  ImageBackground,
+  Alert,
+  Image,
+  Button,
+} from 'react-native';
+import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
+import { Arrowleft, Date } from '../../assets/icons';
+import { Picker } from '@react-native-picker/picker';
+import RadioForm from 'react-native-simple-radio-button';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { addfoto2, addfoto3, date } from '../../assets/images';
+import DatePicker from 'react-native-datepicker';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment';
+import SwitchSelector from 'react-native-switch-selector';
+
+class DetailTamAnakBinaan extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      gambar: '',
+      rapimg: {
+        0: {
+          image: {
+            addfoto2
+          },
+        },
+      },
+      count: 1,
+      tr: [],
+      kanCabang: '',
+      date: new Date(),
+      open: false,
+      WilBin: '',
+      bank: '',
+      notelp: '',
+      shel: '',
+      SOT: '',
+      img1: null,
+      img2: 0,
+      text: '',
+      text1: '',
+      text2: '',
+      show: 0,
+      pel: '',
+      peltinggi: '',
+      pelrendah: '',
+      Ganjil: false,
+      Genap: false,
+      modaldetail: false,
+      simpan: false,
+      kelas: '',
+      agama: '',
+      JK: '',
+      setOpen: '',
+      setDate: '',
+      TB: '',
+      JB: '',
+      resourcePath: {},
+      showAlert: false,
+      isVisible: false,
+      chosenDate: ''
+    };
+  }
+
+  handlePicker = (date) => {
+    this.setState({ isVisible: false, chosenDate: moment(date).format('DD-MM-YYYY') })
+  }
+
+  hidePicker = () => {
+    this.setState({
+      isVisible: false,
+
+    })
+
+  }
+
+  showPicker = () => {
+    this.setState({ isVisible: true })
+  }
+  //vv2
+  takePic(index) {
+    {
+      ImagePicker.launchCamera(
+        {
+          noData: true,
+          saveToPhotos: true,
+          title: 'Select Photo',
+          maxWidth: 300,
+          maxHeight: 400,
+          compressImageQuality: 0.5,
+          storageOptions: {
+            skipBackup: false,
+            path: 'images',
+          },
+        },
+        response => {
+          console.log('Response = ', response);
+
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+          } else {
+            const source = {
+              image: {
+                uri: response.assets[0].uri,
+                name: response.assets[0].fileName,
+                type: response.assets[0].type,
+              },
+              //   id: 0,
+            };
+            console.log('ini gambar = ', source);
+            this.setState(
+              prevState => {
+                prevState.rapimg[index] = source;
+                //   prevState.tgl_lahir[index] != this.props.route.params.tgl_lahir[index] ? this.setState({tglmbuh : true}) : this.setState({tglmbuh : false});
+                return {
+                  rapimg: prevState.rapimg,
+                };
+              },
+              () => console.log(this.state.rapimg),
+            );
+            this.setState({
+              img1: index,
+              img2: index,
+            });
+            console.log('ini gambar = ', this.state.rapimg);
+          }
+        },
+      );
+    }
+  }
+
+
+
+
+
+  takePicGal(index) {
+    {
+      ImagePicker.launchImageLibrary(
+        {
+          noData: true,
+          saveToPhotos: true,
+          title: 'Select Photo',
+          maxWidth: 300,
+          maxHeight: 400,
+          compressImageQuality: 0.5,
+          storageOptions: {
+            skipBackup: false,
+            path: 'images',
+          },
+        },
+        response => {
+          console.log('Response = ', response);
+
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+          } else {
+            const source = {
+              image: {
+                uri: response.assets[0].uri,
+                name: response.assets[0].fileName,
+                type: response.assets[0].type,
+              },
+              //   id: 0,
+            };
+            console.log('ini gambar = ', source);
+            this.setState(
+              prevState => {
+                prevState.rapimg[index] = source;
+                //   prevState.tgl_lahir[index] != this.props.route.params.tgl_lahir[index] ? this.setState({tglmbuh : true}) : this.setState({tglmbuh : false});
+                return {
+                  rapimg: prevState.rapimg,
+                };
+              },
+              () => console.log(this.state.rapimg),
+            );
+            this.setState({
+              img1: index,
+              img2: index,
+            });
+            console.log('ini gambar = ', this.state.rapimg);
+          }
+        },
+      );
+    }
+  }
+
+
+  render() {
+
+    var rapimg = [];
+    for (let i = 0; i <= this.state.img2; i++) {
+      rapimg.push(
+        <Image
+          style={{ width: 200, height: 200, resizeMode: 'contain' }}
+          source={this.state.rapimg[i].image}
+        />,
+      );
+    }
+    const inputbutton = [];
+    for (let i = 0; i < this.state.count; i++) {
+      <>
+        <View key={i}>
+          <Text>{i + 1}.</Text>
+          <Picker
+            style={style.Textinputcss}
+            selectedValue={this.state.rap}
+            value={this.state.tr[i]}
+            onValueChange={itemValue =>
+              this.setState({ rap: itemValue, show: 1 })
+            }>
+            <Picker.Item label="Pilih" value="" />
+            <Picker.Item label="SD/MI" value="SD/MI" />
+            <Picker.Item label="SMP/MTS" value="SMP/MTS" />
+            <Picker.Item label="SMA/SMK/MA" value="SMA/SMK/MA" />
+          </Picker>
+        </View>
+      </>;
+    }
+
+
+
+    const bank = [
+      {
+        label: 'Ya',
+        value: 'Ya',
+      },
+      {
+        label: 'Tidak',
+        value: 'Tidak',
+      },
+    ];
+    const notelp = [
+      {
+        label: 'Ya',
+        value: 'Ya',
+      },
+      {
+        label: 'Tidak',
+        value: 'Tidak',
+      },
+    ];
+    const jenisanak = [
+      {
+        label: 'Tahfidz',
+        value: 'Tahfidz',
+      },
+      {
+        label: 'Non-Tahfidz',
+        value: 'Non-Tahfidz',
+      },
+    ];
+
+    const progressStepsStyle = {
+      activeStepIconBorderColor: '#00A9B8',
+      activeStepNumColor: 'transparent',
+      activeStepIconColor: '#00A9B8',
+      completedStepIconColor: '#00A9B8',
+      completedProgressBarColor: '#00A9B8',
+      disabledStepNumColor: 'transparent',
+      completedCheckColor: 'transparent',
+      borderWidth: 2,
+    };
+
+    const nextbuttonTextStyle = {
+      backgroundColor: '#00A9B8',
+      height: 50,
+      width: 150,
+      borderRadius: 12,
+      color: 'white',
+      paddingHorizontal: 25,
+      paddingVertical: 13,
+      fontFamily: 'Poppins-SemiMedium',
+      fontSize: 15,
+    };
+    const finishbuttonTextStyle = {
+      backgroundColor: '#00A9B8',
+      height: 50,
+      width: 310,
+      borderRadius: 12,
+      color: 'white',
+      paddingHorizontal: 130,
+      paddingVertical: 13,
+      fontFamily: 'Poppins-SemiMedium',
+      fontSize: 15,
+    };
+
+    const previousbuttonTextStyle = {
+      backgroundColor: 'white',
+      height: 50,
+      width: 130,
+      borderWidth: 1,
+      borderRadius: 12,
+      borderColor: '#00A9B8',
+      color: '#00A9B8',
+      paddingHorizontal: 36,
+      paddingVertical: 13,
+      fontFamily: 'Poppins-SemiMedium',
+    };
+
+    return (
+      <View style={{ flex: 1, paddingHorizontal: 20, backgroundColor: '#fff', height: windowHeight }}>
+        {/* <View style={style.header}>
+          <Arrowleft/>
+          <Text style={{color:'#000'}}>Tambah Anak Binaan</Text>
+        </View> */}
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: 10,
+            marginHorizontal: 10,
+            alignItems: 'center',
+          }}>
+          <TouchableWithoutFeedback
+            onPress={() => this.props.navigation.navigate('List_anak')}>
+            <Arrowleft />
+          </TouchableWithoutFeedback>
+          <View style={{ justifyContent: 'center', width: '100%', padding: 10 }}>
+            <Text style={style.title2}>Tambah Anak Binaan</Text>
+          </View>
+        </View>
+        <ProgressSteps {...progressStepsStyle}>
+          <ProgressStep
+            nextBtnTextStyle={nextbuttonTextStyle}
+            nextBtnText="lanjut">
+            <View style={{ height: 800, }}>
+              <Text style={style.Label2}>Informasi Wilayah</Text>
+              <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 55,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 30,
+                  position: 'absolute',
+                }}
+              />
+              <Picker style={style.Textinputcss} mode="dropdown"
+                selectedValue={this.state.kan}
+                onValueChange={(itemValue) => {
+                  this.setState({
+                    kan: itemValue,
+                  })
+                }}>
+                <Picker.Item style={{ fontSize: 12 }} label={'Pilih KanCab'} value={''} key={'0'} />
+                {
+                  this.state.kancab.map((kan, index) =>
+                    <Picker.Item style={{ height: '100%', width: '100%', fontSize: 12, }} label={kan.nama_kacab} value={kan.nama_kacab} key={index} />
+                  )}
+              </Picker>
+
+              <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 55,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 92,
+                  position: 'absolute',
+                }}
+              />
+               <Picker style={style.Textinputcss} mode="dropdown"
+                selectedValue={this.state.wil}
+                onValueChange={(itemValue) => {
+                  this.setState({
+                    wil: itemValue,
+                  })
+                }}>
+                <Picker.Item style={{ fontSize: 12 }} label={'Pilih WilBin'} value={''} key={'0'} />
+                {
+                  this.state.wilbin.map((wil, index) =>
+                    <Picker.Item style={{ height: '100%', width: '100%', fontSize: 12, }} label={wil.nama_wilbin} value={wil.nama_wilbin} key={index} />
+                  )}
+              </Picker>
+
+              <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 55,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 153,
+                  position: 'absolute',
+                }}
+              />
+              <Picker style={style.Textinputcss} mode="dropdown"
+                selectedValue={this.state.shel}
+                onValueChange={(itemValue) => {
+                  this.setState({
+                    shel: itemValue,
+                  })
+                }}>
+                <Picker.Item style={{ fontSize: 12,marginTop:10 }} label={'Pilih shelter'} value={''} key={'0'} />
+                {
+                  this.state.shelter.map((shel, index) =>
+                    <Picker.Item style={{ height: '100%', width: '100%', fontSize: 12, }} label={shel.nama_shelter} value={shel.nama_shelter} key={index} />
+                  )}
+              </Picker>
+
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                keyboardType='numeric'
+                placeholder="No.KK"
+                placeholderTextColor="#C0C0C0"
+              />
+              <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 55,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 273,
+                  position: 'absolute',
+                }}
+              />
+              <Picker
+                style={style.Textinputcss}
+                selectedValue={this.state.SOT}
+                onValueChange={itemValue =>
+                  this.setState({ SOT: itemValue, show: 1 })
+                }>
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Status Orang Tua"
+                  value=""
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Yatim"
+                  value="Yatim"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Dhuafa"
+                  value="Dhuafa"
+                />
+              </Picker>
+              {this.state.show === 1 && this.state.SOT === 'Dhuafa' ? (
+                //vv
+                <View>
+                  <Text style={style.Label3}>Upload SKTM</Text>
+                  <View style={{ marginTop: 8 }}>
+                    <ImageBackground source={addfoto2} style={style.header}>
+                      <TouchableOpacity onPress={() =>
+                        Alert.alert(
+                          'Info',
+                          'Ambl foto menggunakan',
+                          [
+                            {
+                              text: 'Kamera',
+                              onPress: () =>
+                                this.takePic(this.state.tatol === null ? 0 : this.state.tatol + 1),
+                              style: 'cancel',
+                            },
+                            { text: 'Galeri', onPress: () => this.takePicGal(this.state.tatol === null ? 0 : this.state.tatol + 1) },
+                            {
+                              text: "Cancel",
+                              onPress: () => console.log("Cancel Pressed"),
+                              style: "cancel"
+                            },
+                          ],
+                          { cancelable: false },
+                        )
+                      }
+                      >
+
+                        <View style={{ backgroundColor: '#00A9B8', borderRadius: 10, marginTop: 100, padding: 10 }}>
+                          <Text style={{ color: '#fff', fontFamily: 'Poppins-Medium', fontSize: 13 }}>+ Tambah Foto</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </ImageBackground>
+                  </View>
+                </View>
+              ) : this.state.show === 1 && this.state.SOT === 'Yatim' ? (
+                <View>
+                  <Text style={style.Label3}>Surat Keterangan Yatim</Text>
+                  <View style={{ marginTop: 8 }}>
+                    <ImageBackground source={addfoto2} style={style.header}>
+                      <TouchableOpacity onPress={() =>
+                        Alert.alert(
+                          'Info',
+                          'Ambl foto menggunakan',
+                          [
+                            {
+                              text: 'Kamera',
+                              onPress: () =>
+                                this.takePic(this.state.tatol === null ? 0 : this.state.tatol + 1),
+                              style: 'cancel',
+                            },
+                            { text: 'Galeri', onPress: () => this.takePicGal(this.state.tatol === null ? 0 : this.state.tatol + 1) },
+                            {
+                              text: "Cancel",
+                              onPress: () => console.log("Cancel Pressed"),
+                              style: "cancel"
+                            },
+                          ],
+                          { cancelable: false },
+                        )
+                      }
+                      >
+
+                        <View style={{ backgroundColor: '#00A9B8', borderRadius: 10, marginTop: 100, padding: 10 }}>
+                          <Text style={{ color: '#fff', fontFamily: 'Poppins-Medium', fontSize: 13 }}>+ Tambah Foto</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </ImageBackground>
+                  </View>
+                </View>
+              ) : (
+                <></>
+              )}
+              <View>
+                <Text style={style.Label3}>Memiliki Rekening Bank</Text>
+                <RadioForm
+                  radio_props={bank}
+                  onPress={value => {
+                    this.setState({ bank: value }),
+                      ToastAndroid.show(value.toString(), ToastAndroid.SHORT);
+                  }}
+                  initial={1}
+                  buttonSize={10}
+                  buttonOuterSize={20}
+                  animation={true}
+                  formHorizontal={false}
+                  buttonColor='#000'
+                  style={{
+                    flexDirection: 'row',
+                    marginTop: 10,
+                    justifyContent: 'space-evenly',
+                    marginLeft: -90,
+                  }}></RadioForm>
+
+                {this.state.bank === 'Ya' ? (
+                  <View style={{}}>
+                    <TextInput
+                      style={style.kotak3}
+                      onChangeText={text => this.setState({ text })}
+                      value={this.state.text}
+                      placeholder="No. Rekening"
+                      placeholderTextColor="#C0C0C0"
+                      keyboardType='numeric'
+                    />
+                  </View>
+                ) : (
+                  <View></View>
+                )}
+              </View>
+              <View>
+                <Text style={style.Label3}>Memiliki No Telepon</Text>
+                <RadioForm
+                  radio_props={notelp}
+                  onPress={value => {
+                    this.setState({ notelp: value }),
+                      ToastAndroid.show(value.toString(), ToastAndroid.SHORT);
+                  }}
+                  initial={1}
+                  buttonSize={10}
+                  buttonOuterSize={20}
+                  animation={true}
+                  formHorizontal={false}
+                  buttonColor='#000'
+                  style={{
+                    flexDirection: 'row',
+                    marginTop: 10,
+                    justifyContent: 'space-evenly',
+                    marginLeft: -90,
+                  }}></RadioForm>
+
+                {this.state.notelp === 'Ya' ? (
+                  <View style={{}}>
+                    <TextInput
+                      style={style.kotak3}
+                      onChangeText={text => this.setState({ text })}
+                      value={this.state.text}
+                      placeholder="No.HP"
+                      placeholderTextColor="#C0C0C0"
+                      keyboardType='numeric'
+                    />
+                  </View>
+                ) : (
+                  <View></View>
+                )}
+              </View>
+            </View>
+          </ProgressStep>
+          <ProgressStep
+            nextBtnTextStyle={nextbuttonTextStyle}
+            nextBtnText="Lanjut"
+            previousBtnTextStyle={previousbuttonTextStyle}
+            previousBtnText="Kembali">
+            <View style={{ height: 400 }}>
+              <Text style={style.Label2}>Jenjang Pendidikan</Text>
+
+              <View style={{ flexDirection: 'row' }}>
+                {/* <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 55,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 30,
+                  position: 'absolute',
+                }}
+              /> */}
+                <TextInput
+                  style={style.kotak4}
+                  onChangeText={text => this.setState({ text })}
+                  value={this.state.text}
+                  placeholder="Nama Sekolah"
+                  placeholderTextColor="#C0C0C0"
+                />
+                <View
+                  style={{
+                    borderColor: '#DDD',
+                    borderWidth: 1,
+                    height: 50,
+                    width: '39%',
+                    borderRadius: 10,
+                    top: 10,
+                    position: 'absolute',
+                    marginLeft: 195
+                  }} />
+                <Picker
+                  style={style.Textinputcss2}
+                  selectedValue={this.state.kanCabang}
+                  onValueChange={itemValue =>
+                    this.setState({ kanCabang: itemValue, show: 1 })
+                  }>
+                  <Picker.Item
+                    style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                    label="Kelas"
+                    value=""
+                  />
+                  <Picker.Item
+                    style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                    label="Akademik"
+                    value="Akademik"
+                  />
+                  <Picker.Item
+                    style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                    label="Extrakulikuler"
+                    value="Extrakulikuler"
+                  />
+                  <Picker.Item
+                    style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                    label="Lain-lain"
+                    value="Lain-lain"
+                  />
+                </Picker>
+
+              </View>
+              <TextInput
+                style={style.kotak5}
+                onChangeText={text2 => this.setState({ text2 })}
+                value={this.state.text2}
+                placeholder="Alamat Sekolah"
+                placeholderTextColor="#C0C0C0"
+                multiline={true}
+                numberOfLines={4}
+              />
+
+            </View>
+          </ProgressStep>
+          <ProgressStep
+            nextBtnTextStyle={nextbuttonTextStyle}
+            nextBtnText="Lanjut"
+            previousBtnTextStyle={previousbuttonTextStyle}
+            previousBtnText="Kembali">
+            <View style={{ height: 1030 }}>
+              <Text style={style.Label2}>Informasi Anak</Text>
+
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Nama Sekolah"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Nama Lengkap"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Nama Panggilan"
+                placeholderTextColor="#C0C0C0"
+              />
+              <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 50,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 213,
+                  position: 'absolute',
+
+                }} />
+              <Picker
+                style={style.Textinputcss}
+                selectedValue={this.state.agama}
+                onValueChange={itemValue =>
+                  this.setState({ agama: itemValue, show: 1 })
+                }>
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Agama"
+                  value=""
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Islam"
+                  value="Islam"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Kristen"
+                  value="Kristen"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Hindu"
+                  value="Hindu"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Budha"
+                  value="Budha"
+                />
+              </Picker>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center' }}>
+                  <TextInput
+                    style={style.kotak7}
+                    onChangeText={text => this.setState({ chosenDate })}
+                    value={this.state.chosenDate}
+                    placeholder="Tanggal Lahir"
+                    placeholderTextColor="#C0C0C0"
+                  />
+                  <View
+                    style={{
+                      borderColor: '#DDD',
+                      borderWidth: 1,
+                      height: 50,
+                      width: 50,
+                      marginLeft: 250,
+                      borderRadius: 10,
+                      top: 10,
+                      position: 'absolute',
+
+                    }} />
+                  <TouchableOpacity onPress={this.showPicker}>
+                    <View style={{ height: 50, width: 50, justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginTop: 10, marginLeft: 20 }}>
+                      <Date />
+                    </View>
+                  </TouchableOpacity>
+
+                  <DateTimePicker
+                    isVisible={this.state.isVisible}
+                    onConfirm={this.handlePicker}
+                    onCancel={this.hidePicker}
+                    mode={'date'}
+                    is24Hour={true}
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 50,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 333,
+                  position: 'absolute',
+                }} />
+              <Picker
+                style={style.Textinputcss}
+                selectedValue={this.state.JK}
+                onValueChange={itemValue =>
+                  this.setState({ JK: itemValue, show: 1 })
+                }>
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Jenis Kelamin"
+                  value=""
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Laki-Laki"
+                  value="Laki-Laki"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Perempuan"
+                  value="Perempuan"
+                />
+              </Picker>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ color: '#000', fontSize: 16, fontFamily: 'Poppins-Regular' }}> Anak ke</Text>
+                <TextInput
+                  style={style.kotak6}
+                  onChangeText={text => this.setState({ text })}
+                  value={this.state.text}
+                  placeholder="Anak ke"
+                  placeholderTextColor="#C0C0C0"
+                />
+                <Text style={{ color: '#000', color: '#000', fontSize: 16, fontFamily: 'Poppins-Regular' }}> dari</Text>
+                <TextInput
+                  style={style.kotak6}
+                  onChangeText={text => this.setState({ text })}
+                  value={this.state.text}
+                  placeholder="Saudara"
+                  placeholderTextColor="#C0C0C0"
+                />
+              </View>
+              <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 50,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 455,
+                  position: 'absolute',
+
+                }} />
+              <Picker
+                style={style.Textinputcss}
+                selectedValue={this.state.TB}
+                onValueChange={itemValue =>
+                  this.setState({ TB: itemValue, show: 1 })
+                }>
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Tinggal Bersama"
+                  value=""
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Orang Tua"
+                  value="Orang Tua"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Kristen"
+                  value="Kristen"
+                />
+              </Picker>
+
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Pelajaran Favorit"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Hobi"
+                placeholderTextColor="#C0C0C0"
+              />
+              <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 50,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 635,
+                  position: 'absolute',
+
+                }} />
+              <Picker
+                style={style.Textinputcss}
+                selectedValue={this.state.JB}
+                onValueChange={itemValue =>
+                  this.setState({ JB: itemValue, show: 1 })
+                }>
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Jenis Binaan"
+                  value=""
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Orang Tua"
+                  value="Orang Tua"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Kristen"
+                  value="Kristen"
+                />
+              </Picker>
+              <Text style={{ color: '#000', color: '#000', fontSize: 16, fontFamily: 'Poppins-Regular', marginTop: 10 }}>Jenis Anak</Text>
+
+              <RadioForm
+                radio_props={jenisanak}
+                onPress={value => {
+                  this.setState({ bank: jenisanak }),
+                    ToastAndroid.show(value.toString(), ToastAndroid.SHORT);
+                }}
+                initial={1}
+                buttonSize={10}
+                buttonOuterSize={20}
+                animation={true}
+                formHorizontal={false}
+                buttonColor='#000'
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 10,
+                  justifyContent: 'space-evenly',
+                  marginLeft: -40,
+                }}></RadioForm>
+              <Text style={{ color: '#000', color: '#000', fontSize: 16, fontFamily: 'Poppins-Regular', marginTop: 10 }}>Foto Anak</Text>
+              <View style={{ marginTop: 8 }}>
+                <ImageBackground source={addfoto2} style={style.header}>
+                  <TouchableOpacity onPress={() =>
+                    Alert.alert(
+                      'Info',
+                      'Ambl foto menggunakan',
+                      [
+                        {
+                          text: 'Kamera',
+                          onPress: () =>
+                            this.takePic(this.state.tatol === null ? 0 : this.state.tatol + 1),
+                          style: 'cancel',
+                        },
+                        { text: 'Galeri', onPress: () => this.takePicGal(this.state.tatol === null ? 0 : this.state.tatol + 1) },
+                        {
+                          text: "Cancel",
+                          onPress: () => console.log("Cancel Pressed"),
+                          style: "cancel"
+                        },
+                      ],
+                      { cancelable: false },
+                    )
+                  }
+                  >
+
+                    <View style={{ backgroundColor: '#00A9B8', borderRadius: 10, marginTop: 100, padding: 10 }}>
+                      <Text style={{ color: '#fff', fontFamily: 'Poppins-Medium', fontSize: 13 }}>+ Tambah Foto</Text>
+                    </View>
+                  </TouchableOpacity>
+                </ImageBackground>
+              </View>
+            </View>
+          </ProgressStep>
+
+          <ProgressStep
+            nextBtnTextStyle={nextbuttonTextStyle}
+            nextBtnText="Lanjut"
+            previousBtnTextStyle={previousbuttonTextStyle}
+            previousBtnText="Kembali">
+            <View style={{ height: 780 }}>
+              <Text style={style.Label2}>Informasi Ayah</Text>
+
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="NIK Ayah"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Nama Ayah"
+                placeholderTextColor="#C0C0C0"
+              />
+              <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 50,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 152,
+                  position: 'absolute',
+
+                }} />
+              <Picker
+                style={style.Textinputcss}
+                selectedValue={this.state.agama}
+                onValueChange={itemValue =>
+                  this.setState({ agama: itemValue, show: 1 })
+                }>
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Agama"
+                  value=""
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Islam"
+                  value="Islam"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Kristen"
+                  value="Kristen"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Hindu"
+                  value="Hindu"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Budha"
+                  value="Budha"
+                />
+              </Picker>
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Tempat Lahir"
+                placeholderTextColor="#C0C0C0"
+              />
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center' }}>
+                  <TextInput
+                    style={style.kotak7}
+                    onChangeText={text => this.setState({ chosenDate })}
+                    value={this.state.chosenDate}
+                    placeholder="Tanggal Lahir"
+                    placeholderTextColor="#C0C0C0"
+                  />
+                  <View
+                    style={{
+                      borderColor: '#DDD',
+                      borderWidth: 1,
+                      height: 50,
+                      width: 50,
+                      marginLeft: 250,
+                      borderRadius: 10,
+                      top: 10,
+                      position: 'absolute',
+
+                    }} />
+                  <TouchableOpacity onPress={this.showPicker}>
+                    <View style={{ height: 50, width: 50, justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginTop: 10, marginLeft: 20 }}>
+                      <Date />
+                    </View>
+                  </TouchableOpacity>
+
+                  <DateTimePicker
+                    isVisible={this.state.isVisible}
+                    onConfirm={this.handlePicker}
+                    onCancel={this.hidePicker}
+                    mode={'date'}
+                    is24Hour={true}
+                  />
+                </View>
+              </View>
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Provinsi"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Kabupaten"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Kecamatan"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Kelurahan"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Penghasilan"
+                keyboardType='numberic'
+                placeholderTextColor="#C0C0C0"
+              />
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center' }}>
+                  <TextInput
+                    style={style.kotak7}
+                    onChangeText={text => this.setState({ chosenDate })}
+                    value={this.state.chosenDate}
+                    placeholder="Tanggal Kematian"
+                    placeholderTextColor="#C0C0C0"
+                  />
+
+                  <View
+                    style={{
+                      borderColor: '#DDD',
+                      borderWidth: 1,
+                      height: 50,
+                      width: 50,
+                      marginLeft: 250,
+                      borderRadius: 10,
+                      top: 10,
+                      position: 'absolute',
+
+                    }} />
+                  <TouchableOpacity onPress={this.showPicker}>
+                    <View style={{ height: 50, width: 50, justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginTop: 10, marginLeft: 20 }}>
+                      <Date />
+                    </View>
+                  </TouchableOpacity>
+
+                  <DateTimePicker
+                    isVisible={this.state.isVisible}
+                    onConfirm={this.handlePicker}
+                    onCancel={this.hidePicker}
+                    mode={'date'}
+                    is24Hour={true}
+                  />
+                </View>
+              </View>
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Penghasilan"
+                keyboardType='numberic'
+                placeholderTextColor="#C0C0C0"
+              />
+            </View>
+          </ProgressStep>
+          <ProgressStep
+            nextBtnTextStyle={nextbuttonTextStyle}
+            nextBtnText="Lanjut"
+            previousBtnTextStyle={previousbuttonTextStyle}
+            previousBtnText="Kembali">
+            <View style={{ height: 780 }}>
+              <Text style={style.Label2}>Informasi Ibu</Text>
+
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="NIK Ayah"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Nama Ayah"
+                placeholderTextColor="#C0C0C0"
+              />
+              <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 50,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 152,
+                  position: 'absolute',
+
+                }} />
+              <Picker
+                style={style.Textinputcss}
+                selectedValue={this.state.agama}
+                onValueChange={itemValue =>
+                  this.setState({ agama: itemValue, show: 1 })
+                }>
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Agama"
+                  value=""
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Islam"
+                  value="Islam"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Kristen"
+                  value="Kristen"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Hindu"
+                  value="Hindu"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Budha"
+                  value="Budha"
+                />
+              </Picker>
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Tempat Lahir"
+                placeholderTextColor="#C0C0C0"
+              />
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center' }}>
+                  <TextInput
+                    style={style.kotak7}
+                    onChangeText={text => this.setState({ chosenDate })}
+                    value={this.state.chosenDate}
+                    placeholder="Tanggal Lahir"
+                    placeholderTextColor="#C0C0C0"
+                  />
+                  <View
+                    style={{
+                      borderColor: '#DDD',
+                      borderWidth: 1,
+                      height: 50,
+                      width: 50,
+                      marginLeft: 250,
+                      borderRadius: 10,
+                      top: 10,
+                      position: 'absolute',
+
+                    }} />
+                  <TouchableOpacity onPress={this.showPicker}>
+                    <View style={{ height: 50, width: 50, justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginTop: 10, marginLeft: 20 }}>
+                      <Date />
+                    </View>
+                  </TouchableOpacity>
+
+                  <DateTimePicker
+                    isVisible={this.state.isVisible}
+                    onConfirm={this.handlePicker}
+                    onCancel={this.hidePicker}
+                    mode={'date'}
+                    is24Hour={true}
+                  />
+                </View>
+              </View>
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Provinsi"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Kabupaten"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Kecamatan"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Kelurahan"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Penghasilan"
+                keyboardType='numberic'
+                placeholderTextColor="#C0C0C0"
+              />
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center' }}>
+                  <TextInput
+                    style={style.kotak7}
+                    onChangeText={text => this.setState({ chosenDate })}
+                    value={this.state.chosenDate}
+                    placeholder="Tanggal Kematian"
+                    placeholderTextColor="#C0C0C0"
+                  />
+
+                  <View
+                    style={{
+                      borderColor: '#DDD',
+                      borderWidth: 1,
+                      height: 50,
+                      width: 50,
+                      marginLeft: 250,
+                      borderRadius: 10,
+                      top: 10,
+                      position: 'absolute',
+
+                    }} />
+                  <TouchableOpacity onPress={this.showPicker}>
+                    <View style={{ height: 50, width: 50, justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginTop: 10, marginLeft: 20 }}>
+                      <Date />
+                    </View>
+                  </TouchableOpacity>
+
+                  <DateTimePicker
+                    isVisible={this.state.isVisible}
+                    onConfirm={this.handlePicker}
+                    onCancel={this.hidePicker}
+                    mode={'date'}
+                    is24Hour={true}
+                  />
+                </View>
+              </View>
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Penghasilan"
+                keyboardType='numberic'
+                placeholderTextColor="#C0C0C0"
+              />
+            </View>
+          </ProgressStep>
+          <ProgressStep
+            nextBtnTextStyle={finishbuttonTextStyle}
+            nextBtnText="Lanjut"
+            previousBtnDisabled={previousbuttonTextStyle}
+            previousBtnText="  "
+            finishBtnText="Selesai"
+          >
+            <View style={{ height: 930 }}>
+              <Text style={style.Label2}>Informasi Wali</Text>
+
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="NIK Wali"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Nama Wali"
+                placeholderTextColor="#C0C0C0"
+              />
+              <View
+                style={{
+                  borderColor: '#DDD',
+                  borderWidth: 1,
+                  height: 50,
+                  width: '100%',
+                  borderRadius: 10,
+                  top: 152,
+                  position: 'absolute',
+
+                }} />
+              <Picker
+                style={style.Textinputcss}
+                selectedValue={this.state.agama}
+                onValueChange={itemValue =>
+                  this.setState({ agama: itemValue, show: 1 })
+                }>
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Agama"
+                  value=""
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Islam"
+                  value="Islam"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Kristen"
+                  value="Kristen"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Hindu"
+                  value="Hindu"
+                />
+                <Picker.Item
+                  style={{ fontSize: 14, fontFamily: 'Poppins-Regular' }}
+                  label="Budha"
+                  value="Budha"
+                />
+              </Picker>
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Tempat Lahir"
+                placeholderTextColor="#C0C0C0"
+              />
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center' }}>
+                  <TextInput
+                    style={style.kotak7}
+                    onChangeText={text => this.setState({ chosenDate })}
+                    value={this.state.chosenDate}
+                    placeholder="Tanggal Lahir"
+                    placeholderTextColor="#C0C0C0"
+                  />
+                  <View
+                    style={{
+                      borderColor: '#DDD',
+                      borderWidth: 1,
+                      height: 50,
+                      width: 50,
+                      marginLeft: 250,
+                      borderRadius: 10,
+                      top: 10,
+                      position: 'absolute',
+
+                    }} />
+                  <TouchableOpacity onPress={this.showPicker}>
+                    <View style={{ height: 50, width: 50, justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginTop: 10, marginLeft: 20 }}>
+                      <Date />
+                    </View>
+                  </TouchableOpacity>
+
+                  <DateTimePicker
+                    isVisible={this.state.isVisible}
+                    onConfirm={this.handlePicker}
+                    onCancel={this.hidePicker}
+                    mode={'date'}
+                    is24Hour={true}
+                  />
+                </View>
+              </View>
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Provinsi"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Kabupaten"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Kecamatan"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Kelurahan"
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Penghasilan"
+                keyboardType='numberic'
+                placeholderTextColor="#C0C0C0"
+              />
+              <TextInput
+                style={style.kotak3}
+                onChangeText={text => this.setState({ text })}
+                value={this.state.text}
+                placeholder="Hubungan Kerabat"
+                placeholderTextColor="#C0C0C0"
+              />
+              <View style={{ marginTop: 8 }}>
+                <ImageBackground source={addfoto3} style={style.header}>
+                  <TouchableOpacity onPress={() =>
+                    Alert.alert(
+                      'Info',
+                      'Ambl foto menggunakan',
+                      [
+                        {
+                          text: 'Kamera',
+                          onPress: () =>
+                            this.takePic(this.state.tatol === null ? 0 : this.state.tatol + 1),
+                          style: 'cancel',
+                        },
+                        { text: 'Galeri', onPress: () => this.takePicGal(this.state.tatol === null ? 0 : this.state.tatol + 1) },
+                        {
+                          text: "Cancel",
+                          onPress: () => console.log("Cancel Pressed"),
+                          style: "cancel"
+                        },
+                      ],
+                      { cancelable: false },
+                    )
+                  }
+                  >
+
+                    <View style={{ backgroundColor: '#00A9B8', borderRadius: 10, marginTop: 100, padding: 10 }}>
+                      <Text style={{ color: '#fff', fontFamily: 'Poppins-Medium', fontSize: 13 }}>+ Tambah Foto</Text>
+                    </View>
+                  </TouchableOpacity>
+                </ImageBackground>
+              </View>
+            </View>
+          </ProgressStep>
+        </ProgressSteps>
+      </View>
+    );
+  }
+}
+
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
+
+export default DetailTamAnakBinaan;
+
+const style = StyleSheet.create({
+  header: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: windowWidth * 0.95,
+    height: windowHeight * 0.29,
+    flexDirection: 'row',
+  },
+  header2: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: windowWidth * 0.6,
+    height: windowHeight * 0.3,
+    flexDirection: 'row',
+  },
+  contentContainer: {
+    backgroundColor: '#fff',
+    width: '100%',
+    height: '100%',
+    flex: 1,
+  }, // vildan menghapus flex dan menambahkan backgroundCOlor,width dan hight
+  colnilai: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  Label2: {
+    marginTop: -5,
+    fontSize: 16,
+    width: '100%',
+    color: '#000',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: 'Poppins-Medium',
+  },
+  Label3: {
+    marginTop: 10,
+    fontSize: 16,
+    width: '100%',
+    color: '#000',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: 'Poppins-Medium',
+  },
+  Label3: {
+    marginTop: 15,
+    fontSize: 16,
+    width: '100%',
+    color: '#000',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: 'Poppins-Medium',
+  },
+  title2: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginRight: 20,
+    fontSize: 15,
+    color: '#000',
+    fontFamily: 'Poppins-SemiBold',
+  },
+  Textinputcss: {
+    color: '#C0C0C0',
+    marginTop: 10,
+    left: 2,
+    marginRight: 4,
+    borderRadius: 10,
+    borderWidth: 1,
+    fontSize: 10,
+    height: 40,
+    borderColor: '#C0C0C0',
+    fontFamily: 'Poppins-Regular',
+  },
+  Textinputcss2: {
+    color: '#C0C0C0',
+    marginTop: 10,
+    left: 2,
+    marginLeft: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    fontSize: 10,
+    height: 30,
+    width: windowWidth - 240,
+    borderColor: '#C0C0C0',
+    fontFamily: 'Poppins-Regular',
+  },
+  kotak3: {
+    marginTop: 10,
+    color: '#000',
+    borderRadius: 10,
+    borderWidth: 0.1,
+    fontSize: 13,
+    height: 50,
+    width: windowWidth - 40,
+    padding: 12,
+    backgroundColor: '#fff',
+    borderColor: '#DDDDDD',
+    borderWidth: 1,
+    fontFamily: 'Poppins-Regular',
+  },
+  kotak4: {
+    marginTop: 10,
+    color: '#000',
+    borderRadius: 10,
+    borderWidth: 0.1,
+    fontSize: 13,
+    height: 50,
+    width: windowWidth - 173,
+    padding: 12,
+    backgroundColor: '#fff',
+    borderColor: '#DDDDDD',
+    borderWidth: 1,
+    fontFamily: 'Poppins-Regular',
+  },
+  kotak7: {
+    marginTop: 10,
+    color: '#000',
+    borderRadius: 10,
+    borderWidth: 0.1,
+    fontSize: 13,
+    height: 50,
+    width: windowWidth - 130,
+    padding: 12,
+    backgroundColor: '#fff',
+    borderColor: '#DDDDDD',
+    borderWidth: 1,
+    fontFamily: 'Poppins-Regular',
+  },
+  kotak5: {
+    marginTop: 15,
+    color: '#000',
+    borderRadius: 10,
+    borderWidth: 0.1,
+    fontSize: 13,
+    height: 100,
+    width: windowWidth - 40,
+    backgroundColor: '#fff',
+    borderColor: '#DDDDDD',
+    borderWidth: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    padding: 12,
+    fontFamily: 'Poppins-Regular',
+    textAlignVertical: 'top'
+  },
+  kotak6: {
+    marginTop: 10,
+    color: '#000',
+    borderRadius: 10,
+    marginHorizontal: 10,
+    borderWidth: 0.1,
+    fontSize: 14,
+    height: 50,
+    width: 83,
+    backgroundColor: '#fff',
+    borderColor: '#DDDDDD',
+    borderWidth: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    padding: 12,
+    fontFamily: 'Poppins-Regular',
+    textAlignVertical: 'top'
+  },
+});
+
+// import {Text, View, StyleSheet, StatusBar, Dimensions} from 'react-native';
+// import React, {Component} from 'react';
+// import StepIndicator from 'react-native-step-indicator';
+
+// const labels = ["Cart","Delivery Address","Order Summary","Payment Method","Track"];
+// const customStyles = {
+//   stepIndicatorSize: 25,
+//   currentStepIndicatorSize: 30,
+//   separatorStrokeWidth: 2,
+//   currentStepStrokeWidth: 3,
+//   stepStrokeCurrentColor: '#fe7013',
+//   stepStrokeWidth: 3,
+//   stepStrokeFinishedColor: '#fe7013',
+//   stepStrokeUnFinishedColor: '#aaaaaa',
+//   separatorFinishedColor: '#fe7013',
+//   separatorUnFinishedColor: '#aaaaaa',
+//   stepIndicatorFinishedColor: '#fe7013',
+//   stepIndicatorUnFinishedColor: '#ffffff',
+//   stepIndicatorCurrentColor: '#ffffff',
+//   stepIndicatorLabelFontSize: 13,
+//   currentStepIndicatorLabelFontSize: 13,
+//   stepIndicatorLabelCurrentColor: '#fe7013',
+//   stepIndicatorLabelFinishedColor: '#ffffff',
+//   stepIndicatorLabelUnFinishedColor: '#aaaaaa',
+//   labelColor: '#999999',
+//   labelSize: 13,
+//   currentStepLabelColor: '#fe7013',
+// };
+
+// const data = [
+//   {
+//     label: "akuu",
+//   },
+//   {
+//     label: "dai",
+//   },
+//   {
+//     label: "asdkk",
+//   },
+// ];
+
+// export class DetailTamAnakBinaan extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       currentPosition: 0,
+//     };
+//   }
+
+//   onPageChange(position){
+//     this.setState({currentPosition: position});
+// }
+
+//   render() {
+
+//     return (
+//       <View style={style.container}>
+//         <StatusBar backgroundColor="#000" barStyle="light-content" />
+//         <View style={style.header}>
+//           <Text
+//             style={{color: '#000', fontSize: 14, fontFamily: 'Poppins-Medium'}}>
+//             Tambah Anak Binaan
+//           </Text>
+//         </View>
+//         <View style={style.indocatorContainer}>
+//           <StepIndicator
+//             customStyles={customStyles}
+//             currentPosition={this.state.currentPosition}
+//             labels={labels}
+//             renderLabel={({position, stepStatus, label, currentPosition}) => {
+//               return(
+//                 <View style={style.lblContainer}>
+//                   <Text>{data[position].label}</Text>
+//                 </View>
+//               )
+//             }}
+//           />
+//         </View>
+//       </View>
+//     );
+//   }
+// }
+
+// export default DetailTamAnakBinaan;
+
+// const windowHeight = Dimensions.get('window').height;
+// const windowWidth = Dimensions.get('window').width;
+
+// const style = StyleSheet.create({
+//   container: {
+//     backgroundColor: '#fff',
+//     width: '100%',
+//     height: '100%',
+//     flex: 1,
+//   },
+//   header: {
+//     height: 55,
+//     padding: 10,
+//     width: '100%',
+//     backgroundColor: '#fff',
+//     elevation: 10,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   headerTex: {
+//     color: '#ff3232',
+//     fontSize: 14,
+//     fontWeight: 'bold',
+//   },
+//   indocatorContainer: {
+//     height: windowHeight - 170,
+//     width: windowWidth - 30,
+//     padding: 20,
+//     margin: 15,
+//     borderRadius: 20,
+//     elevation: 10,
+//     backgroundColor: '#000',
+//   },
+//   lblContainer: {
+//    marginTop: 15,
+//    paddingLeft: 5,
+//    width: windowWidth - 100,
+//   },
+//   lblText: {
+//     fontSize: 14,
+//     color: '#fff',
+//     fontWeight: 'bold'
+//   },
+//   status:{
+//     fontSize: 14,
+//     color: 'gray'
+//   }
+// });

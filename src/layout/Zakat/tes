@@ -1,0 +1,222 @@
+  <>
+                        <View>
+                            {inputbutton}
+                            <View>
+                                <Text style={style.Label1}>Jenis Zakat</Text>
+                                <Picker style={style.Textinputcss}
+                                    selectedValue={this.state.zakat}
+                                    onValueChange={(itemValue) => this.setState({ zakat: itemValue, show: 1 })}
+                                >
+                                    <Picker.Item label="Pilih Zakat" value="" />
+                                    <Picker.Item label="Zakat Propesi" value="Zakat_Propesi" />
+                                    <Picker.Item label="Zakat Emas" value="Zakat_Emas" />
+                                    <Picker.Item label="Zakat Simpanan" value="Zakat_Simpanan" />
+                                    <Picker.Item label="Zakat Perdagangan" value="Zakat_Perdagangan" />
+                                </Picker>
+
+
+                            </View>
+
+                            {this.state.show === 1 && this.state.zakat === 'Zakat_Propesi' ?
+                                <View>
+                                    <Text style={style.Label1}>Pendapatan Perbulan (wajib di isi)</Text>
+                                    <TextInput
+                                        style={style.kotak2}
+                                        onChangeText={text => this.setState({ text })}
+                                        value={this.state.text}
+                                        keyboardType="numeric"
+                                        placeholder="Rp.0"
+                                        placeholderTextColor='#7e7e7e'
+                                    />
+                                    <Text style={style.Label1}>Bonus, THR Lainnya (jika ada)</Text>
+                                    <TextInput
+                                        style={style.kotak2}
+                                        onChangeText={text => this.setState({ text })}
+                                        value={this.state.text}
+                                        keyboardType="numeric"
+                                        placeholder="Rp.0"
+                                        placeholderTextColor='#7e7e7e'
+                                    />
+                                    <Text style={style.Label1}>Jumlah zakat profesi yang anda bayar</Text>
+                                    <TextInput
+                                        style={style.kotak3}
+                                        onChangeText={text => this.setState({ text })}
+                                        value={this.state.text}
+                                        keyboardType="numeric"
+                                        placeholder="Rp.0"
+                                        placeholderTextColor='#7e7e7e'
+                                    />
+                                    <TouchableOpacity style={{ marginTop: 10, justifyContent: 'center', alignContent: 'center', alignItems: 'center', }}>
+                                        <View style={style.btnSimpanDark}>
+                                            <Text> Bayar Zakat</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                                :
+                                this.state.show === 1 && this.state.zakat === 'Zakat_Emas' ?
+                                    <View>
+                                        <Text style={style.Label1}>Jumlah Emas per gram</Text>
+                                        <TextInput
+                                            style={style.kotak2}
+                                            onChangeText={text => this.setState({ text })}
+                                            value={this.state.text}
+                                            keyboardType="numeric"
+                                            placeholder="0.Gram"
+                                            placeholderTextColor='#7e7e7e'
+                                        />
+                                        <Text>Harga Emas saat ini</Text>
+                                        <Text style={style.Label1}>Jumlah zakat Emas yang anda bayar</Text>
+                                        <TextInput
+                                            style={style.kotak3}
+                                            onChangeText={text => this.setState({ text })}
+                                            value={this.state.text}
+                                            keyboardType="numeric"
+                                            placeholder="Rp.0"
+                                            placeholderTextColor='#7e7e7e'
+                                        />
+                                        <TouchableOpacity style={{ marginTop: 10, justifyContent: 'center', alignContent: 'center', alignItems: 'center', }}>
+                                            <View style={style.btnSimpanDark}>
+                                                <Text> Bayar Zakat</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                    :
+                                    this.state.show === 1 && this.state.zakat === 'Zakat_Simpanan' ?
+                                        <View>
+                                            <Text style={style.Label1}>Saldo Tabungan (wajib di isi)</Text>
+                                            <TextInput
+                                                style={style.kotak2}
+                                                onChangeText={text => this.setState({ text })}
+                                                value={this.state.text}
+                                                keyboardType="numeric"
+                                                placeholder="Rp.0"
+                                                placeholderTextColor='#7e7e7e'
+                                            />
+                                            <Text style={style.Label1}>Bagi Hasil (jika ada)</Text>
+                                            <TextInput
+                                                style={style.kotak2}
+                                                onChangeText={text => this.setState({ text })}
+                                                value={this.state.text}
+                                                keyboardType="numeric"
+                                                placeholder="Rp.0"
+                                                placeholderTextColor='#7e7e7e'
+                                            />
+                                            <Text style={style.Label1}>Jumlah zakat profesi yang anda bayar</Text>
+                                            <TextInput
+                                                style={style.kotak3}
+                                                onChangeText={text => this.setState({ text })}
+                                                value={this.state.text}
+                                                keyboardType="numeric"
+                                                placeholder="Rp.0"
+                                                placeholderTextColor='#7e7e7e'
+                                            />
+                                            <TouchableOpacity style={{ marginTop: 10, justifyContent: 'center', alignContent: 'center', alignItems: 'center', }}>
+                                                <View style={style.btnSimpanDark}>
+                                                    <Text> Bayar Zakat</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                        :
+                                        this.state.show === 1 && this.state.zakat === 'Zakat_Perdagangan' ?
+                                            <View>
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <View style={{ flexDirection: 'column' }}>
+                                                        <Text style={style.Label1}>Modal (1 Tahun)     </Text>
+                                                        <TextInput
+                                                            style={style.kotak2}
+                                                            onChangeText={text => this.setState({ text })}
+                                                            value={this.state.text}
+                                                            keyboardType="numeric"
+                                                            placeholder="Rp.0"
+                                                            placeholderTextColor='#7e7e7e'
+                                                        />
+                                                    </View>
+                                                    <View style={{ flexDirection: 'column', }}>
+                                                        <Text style={style.Label1}>Keuntungan (1 Tahun)</Text>
+                                                        <TextInput
+                                                            style={style.kotak2}
+                                                            onChangeText={text => this.setState({ text })}
+                                                            value={this.state.text}
+                                                            keyboardType="numeric"
+                                                            placeholder="Rp.0"
+                                                            placeholderTextColor='#7e7e7e'
+                                                        />
+                                                    </View>
+                                                </View>
+                                                <View>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <View style={{ flexDirection: 'column', justifyContent: 'space-between' }}>
+                                                            <Text style={style.Label1}>Hutang /{"\n"}Kerugian (1 Tahun)</Text>
+                                                            <TextInput
+                                                                style={style.kotak2}
+                                                                onChangeText={text => this.setState({ text })}
+                                                                value={this.state.text}
+                                                                keyboardType="numeric"
+                                                                placeholder="Rp.0"
+                                                                placeholderTextColor='#7e7e7e'
+                                                            />
+                                                        </View>
+                                                        <View style={{ flexDirection: 'column', marginTop: 15, }}>
+                                                            <Text style={style.Label1}>Hutang Jatuh Tempo</Text>
+                                                            <TextInput
+                                                                style={style.kotak2}
+                                                                onChangeText={text => this.setState({ text })}
+                                                                value={this.state.text}
+                                                                keyboardType="numeric"
+                                                                placeholder="Rp.0"
+                                                                placeholderTextColor='#7e7e7e'
+                                                            />
+                                                        </View>
+                                                    </View>
+                                                </View>
+                                                <Text style={style.Label1}>Jumlah zakat profesi yang anda bayar</Text>
+                                                <TextInput
+                                                    style={style.kotak3}
+                                                    onChangeText={text => this.setState({ text })}
+                                                    value={this.state.text}
+                                                    keyboardType="numeric"
+                                                    placeholder="Rp.0"
+                                                    placeholderTextColor='#7e7e7e'
+                                                />
+                                                <TouchableOpacity style={{ marginTop: 10, justifyContent: 'center', alignContent: 'center', alignItems: 'center', }}>
+                                                    <View style={style.btnSimpanDark}>
+                                                        <Text> Bayar Zakat</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
+                                            :
+                                            <View />
+                            }
+
+                        </View>
+                    </>
+                    
+                    <View>
+                    <TextInput style={style.Textinputcss}
+                        value={this.state.firstValue}
+                        keyboardType="numeric"
+                        onChangeText={(firstValue) => this.setState({ firstValue })}
+                    />
+
+                    <TextInput style={style.Textinputcss}
+                        value={this.state.secondValue}
+                        keyboardType="numeric"
+                        onChangeText={(secondValue) => this.setState({ secondValue })}
+                    />
+                    <TextInput style={style.Textinputcss}
+                        value={this.state.thirdValue}
+                        keyboardType="numeric"
+                        onChangeText={(thirdValue) => this.setState({ thirdValue })}
+                    />
+
+                    <TextInput style={style.Textinputcss}
+                        value={this.state.fourValue}
+                        keyboardType="numeric"
+                        onChangeText={(fourValue) => this.setState({ fourValue })}
+                    />
+                    <TouchableHighlight onPress={this.profesi}>
+                        <Text>Calculate</Text>
+                    </TouchableHighlight>
+
+                    <Text>{`Sum ${this.state.sum}`}</Text>
+                </View>
